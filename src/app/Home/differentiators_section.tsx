@@ -72,7 +72,7 @@ export default function DifferentiatorsSection() {
             style={{ backgroundColor: BRAND_PRIMARY_DARK }}
           ></div>
           <p className="mt-4 text-xl text-gray-700 max-w-3xl mx-auto">
-            We don't just install solar; we engineer financial and environmental
+            We don&apos;t just install solar; we engineer financial and environmental
             certainty for your future with guaranteed quality.
           </p>
         </motion.div>

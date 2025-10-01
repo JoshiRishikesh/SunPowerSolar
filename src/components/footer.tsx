@@ -67,7 +67,7 @@ export default function Footer() {
                 sustainability, and independence with tailored solar solutions.
               </p>
               <p className="mt-4 text-sm italic text-gray-500">
-                "Experience the Power of the Sun."
+                &quot;Experience the Power of the Sun.&quot;
               </p>
             </motion.div>
 
