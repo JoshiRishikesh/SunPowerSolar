@@ -112,7 +112,10 @@ export default function ProcessSection() {
       <div className="w-full relative overflow-hidden">
         <motion.video
           src="/home.webm"
-          alt="Solar installation on a modern home"
+          autoPlay
+          muted
+          loop
+          playsInline
           className="w-full h-auto object-cover"
           initial={{ opacity: 0, scale: 1.02 }}
           whileInView={{ opacity: 1, scale: 1 }}
