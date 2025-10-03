@@ -8,6 +8,7 @@ import ProcessSection from './process_section';
 import DifferentiatorsSection from './differentiators_section'; 
 import FinalCtaBlock from './cta_block';
 import AboutPageContent from './AboutPageContent';
+import SolarScrollAnimation from './animation';
 
 export default function MainContent() {
     return (
@@ -17,6 +18,7 @@ export default function MainContent() {
                   SECTION 1: HERO SECTION
                   ========================================
                 */}
+                <SolarScrollAnimation />
                 <HeroSection />
                 <BenefitsStatsSection />
                 <ProcessSection />

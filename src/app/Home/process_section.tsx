@@ -107,27 +107,6 @@ export default function ProcessSection() {
           ))}
         </div>
       </div>
-
-      {/* Full-Width Decorative Image */}
-      <div className="w-full relative overflow-hidden">
-        <motion.video
-          src="/home.webm"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-auto object-cover"
-          initial={{ opacity: 0, scale: 1.02 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src =
-              "https://placehold.co/1920x400/193f88/fdcc14/png?text=Solar+Installation+Design";
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/20 via-transparent to-transparent pointer-events-none"></div>
-      </div>
     </section>
   );
 }
