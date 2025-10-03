@@ -110,7 +110,7 @@ export default function ProcessSection() {
 
       {/* Full-Width Decorative Image */}
       <div className="w-full relative overflow-hidden">
-        <motion.img
+        <motion.video
           src="/home.webm"
           alt="Solar installation on a modern home"
           className="w-full h-auto object-cover"
