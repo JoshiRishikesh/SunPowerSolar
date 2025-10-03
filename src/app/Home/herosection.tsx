@@ -34,25 +34,21 @@ export default function HeroSection() {
       
       {/* Carousel */}
       <div className="absolute inset-0">
-        {imageSources.map((src, index) => (
-          <img
-            key={index}
-            src={src}
-            alt={`Premium modern home with solar panels, view ${index + 1}`}
-            className={`
-              absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out
-              ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}
-            `}
+          {imageSources.map((src, index) => (
+            <Image
+          key={index}
+          src={src}
+          alt={`Premium modern home with solar panels, view ${index + 1}`}
+          fill // <--- REQUIRED FIX: Use 'fill' because the image is absolutely positioned to cover its parent
+          priority={index === 0} // <--- Optional but recommended for LCP on the first image
+          className={`
+          absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out
+          ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}
+          `}
           />
-        ))}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%)",
-          }}
-        ></div>
-      </div>
+          ))}
+        </div>
+
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">

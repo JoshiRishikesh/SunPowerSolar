@@ -81,7 +81,7 @@ export default function HeroSolarSystem() {
           Power Your World with Sun Power Solar
         </h1>
         <p className="text-xl md:text-2xl mb-6 drop-shadow-md">
-          Harness the sun's energy for a brighter, sustainable future.
+          Harness the sun&apos;s energy for a brighter, sustainable future.
         </p>
         <Link href="/contact">
           <button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 px-6 rounded-lg shadow-lg transition-all">

@@ -5,7 +5,6 @@ import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const BRAND_PRIMARY_DARK = '#193f88';
-const BRAND_ACCENT_LIGHT = '#fdcc14';
 const BRAND_GREEN = '#28a745';
 
 export default function FinalCtaBlock() {
