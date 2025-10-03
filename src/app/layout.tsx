@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import PreloaderWrapper from "@/components/PreloaderWrapper"; // New wrapper component
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,13 +13,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-  // Ensure the mono font is correctly loaded if needed elsewhere
 });
 
-// 3. Updated Metadata for SEO and branding
+// Updated Metadata for SEO and branding
 export const metadata: Metadata = {
   title: "Sun Power Solar | Achieve Permanent Energy Freedom",
-  description: "Zero Monthly Expense and Stable Energy Independence for the Next 25 Years. Get a free site survey today!",
+  description:
+    "Zero Monthly Expense and Stable Energy Independence for the Next 25 Years. Get a free site survey today!",
 };
 
 export default function RootLayout({
@@ -28,20 +29,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {/* Use a flex container to ensure the layout pushes the footer to the bottom */}
-        <div className="flex flex-col min-h-screen">
-            {/* 4. Navbar remains sticky and visible on all pages */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* Wrap everything with the Client-side Preloader Wrapper */}
+        <PreloaderWrapper>
+          <div className="flex flex-col min-h-screen">
+            {/* Navbar remains sticky and visible on all pages */}
             <Navbar />
 
-            {/* children (Page content) takes up the remaining space, ensuring content starts below the Navbar */}
-            <main className="flex-grow">
-                {children}
-            </main>
+            {/* Main content */}
+            <main className="flex-grow">{children}</main>
+
+            {/* Footer */}
             <Footer />
-        </div>
+          </div>
+        </PreloaderWrapper>
       </body>
     </html>
   );

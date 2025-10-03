@@ -6,7 +6,6 @@ import { TextureLoader, Color } from "three";
 import { useRef, useMemo, Suspense, useState } from "react";
 import type { Mesh, Group } from "three";
 import Link from "next/link";
-import Preloader from "@/components/preloader";
 
 
 // 3D Solar System component
@@ -53,7 +52,6 @@ export default function HeroSolarSystem() {
 
   return (
     <div className="w-full h-screen relative overflow-hidden">
-      {!loaded && <Preloader onFinish={() => setLoaded(true)} />}
 
       <Suspense fallback={null}>
         <Canvas
