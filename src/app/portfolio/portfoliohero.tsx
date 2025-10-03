@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const BRAND_PRIMARY_DARK = '#193f88'; // Deep Navy Blue
 const BRAND_ACCENT_LIGHT = '#fdcc14'; // Gold/Yellow
@@ -14,10 +15,12 @@ export default function PortfolioHero() {
             
             {/* Background with Subtle Movement */}
             <div className="absolute inset-0 animate-slowZoom">
-                <img
+                <Image
                     src="/carousal1.webp"
                     alt="Collage of solar panel installations"
-                    className="absolute inset-0 w-full h-full object-cover opacity-70"
+                    fill // <- ADD THIS
+                    priority // <- ADD THIS (for LCP)
+                    className="absolute inset-0 w-full h-full object-cover opacity-70" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-black/90"></div>
             </div>

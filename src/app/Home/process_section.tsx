@@ -5,8 +5,6 @@ import { motion } from "framer-motion";
 import { Lightbulb, LayoutGrid, Zap } from "lucide-react";
 
 const BRAND_PRIMARY_DARK = "#193f88";
-const BRAND_ACCENT_LIGHT = "#fdcc14";
-
 const processSteps = [
   {
     icon: Lightbulb,

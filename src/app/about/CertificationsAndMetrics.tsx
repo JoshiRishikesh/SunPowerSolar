@@ -9,10 +9,16 @@ const BRAND_NATURE_GREEN = '#0e6b50'; // Deep Forest Green
 // Animated Counter
 const AnimatedCounter = ({ end, duration = 2000, prefix = '', suffix = '' }: { end: number, duration?: number, prefix?: string, suffix?: string }) => {
     const [count, setCount] = useState(0);
-    const ref = useRef(null);
+    const ref = useRef<HTMLDivElement>(null); // Added type for better TypeScript support
     const hasAnimated = useRef(false);
 
     useEffect(() => {
+        // FIX: Capture ref.current in a local variable for the effect and cleanup function
+        const currentRef = ref.current; 
+
+        // Early exit if no element is attached (though unlikely)
+        if (!currentRef) return; 
+
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting && !hasAnimated.current) {
                 hasAnimated.current = true;
@@ -31,16 +37,19 @@ const AnimatedCounter = ({ end, duration = 2000, prefix = '', suffix = '' }: { e
                 };
 
                 window.requestAnimationFrame(step);
-                observer.unobserve(entry.target);
+                // No need to unobserve here as the cleanup function will handle it on component unmount
+                // If you want it to only fire once, observer.unobserve(entry.target); is technically fine.
             }
         }, { threshold: 0.5 });
 
-        if (ref.current) observer.observe(ref.current);
+        // Start observing the captured element
+        observer.observe(currentRef);
 
         return () => {
-            if (ref.current) observer.unobserve(ref.current);
+            // Use the captured variable for cleanup
+            observer.unobserve(currentRef);
         };
-    }, [end, duration]);
+    }, [end, duration]); // end and duration are correct dependencies
 
     return (
         <div ref={ref} className="text-center">
@@ -91,7 +100,7 @@ export default function CertificationsAndMetrics() {
                     {metrics.map((metric, index) => (
                         <div key={index}
                             className="relative p-6 sm:p-8 rounded-2xl bg-white/70 backdrop-blur-sm border border-transparent 
-                                       shadow-lg transition duration-300 hover:scale-105"
+                                             shadow-lg transition duration-300 hover:scale-105"
                             style={{ borderImage: `linear-gradient(90deg, ${BRAND_ACCENT_LIGHT}, ${BRAND_NATURE_GREEN}) 1` }}
                         >
                             <AnimatedCounter end={metric.value} prefix={metric.prefix} suffix={metric.suffix} />
@@ -113,11 +122,11 @@ export default function CertificationsAndMetrics() {
                         {certifications.map((cert, index) => (
                             <div key={index}
                                 className="relative p-6 rounded-2xl border border-transparent bg-white/80 backdrop-blur-md 
-                                           shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 cursor-pointer flex flex-col items-center"
+                                             shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 cursor-pointer flex flex-col items-center"
                                 style={{ borderImage: `linear-gradient(135deg, ${BRAND_ACCENT_LIGHT}, ${BRAND_NATURE_GREEN}) 1` }}
                             >
                                 <div className={`w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full text-white text-xs sm:text-sm font-black mb-4 
-                                               shadow-xl bg-gradient-to-br ${cert.color} border-4 border-white`}>
+                                                   shadow-xl bg-gradient-to-br ${cert.color} border-4 border-white`}>
                                     {cert.logoText}
                                 </div>
                                 <p className="text-gray-800 font-semibold text-center">{cert.name}</p>
@@ -133,8 +142,8 @@ export default function CertificationsAndMetrics() {
                     </p>
                     <a href="/contact"
                         className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold rounded-full 
-                                   bg-gradient-to-r from-yellow-400 to-green-600 text-white shadow-lg 
-                                   hover:shadow-xl transition transform hover:scale-105 group"
+                                         bg-gradient-to-r from-yellow-400 to-green-600 text-white shadow-lg 
+                                         hover:shadow-xl transition transform hover:scale-105 group"
                     >
                         Check My Eligibility
                         <Zap className="w-4 h-4 sm:w-5 sm:h-5 ml-2 sm:ml-3 transition-transform duration-300 group-hover:rotate-12" />

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Phone, MessageCircle, Zap, Building, Home } from "lucide-react";
+import { Phone, MessageCircle, Zap, Building, Home, LucideIcon } from "lucide-react";
 import { motion } from "framer-motion";
 
 // Brand Colors
@@ -24,7 +24,7 @@ My name is [Your Name], and I am interested in exploring solar solutions for my 
 Could you please provide me with more details about installation, pricing, and available options?%0A
 You may also reach me at [Your Contact Number] for a quick discussion.%0A%0A
 Thank you, looking forward to your assistance.`,
-  
+
   service: `Hello GreenTech Solar Support,%0A
 My name is [Your Name], and I would like to request assistance regarding solar solutions for my commercial property / service support for an existing installation.%0A%0A
 Please let me know the process and next steps.%0A
@@ -40,7 +40,7 @@ const getWhatsAppLink = (number: string, message: string) => {
 interface ContactCardProps {
   title: string;
   number: string;
-  icon: React.ElementType;
+  icon: LucideIcon; // Updated type for Lucide icons
   message: string;
 }
 

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Briefcase, Wrench, Users, Star } from 'lucide-react';
+import Image from 'next/image';
 
 const BRAND_ACCENT_LIGHT = '#fdcc14'; // Gold
 const BRAND_NATURE_GREEN = '#0e6b50'; // Deep Forest Green
@@ -69,7 +70,7 @@ export default function TeamLeadership() {
                   className="mb-6 w-32 h-32 rounded-full overflow-hidden border-4 shadow-md"
                   style={{ borderColor: BRAND_ACCENT_LIGHT }}
                 >
-                  <img
+                  <Image
                     src={member.imageUrl}
                     alt={`Profile of ${member.name}`}
                     className="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-500"
