@@ -32,7 +32,7 @@ function SolarSystem() {
       <mesh ref={sunRef} position={[0, 0, 0]}>
         <sphereGeometry args={[2, 32, 32]} />
         <meshBasicMaterial map={sunTexture} toneMapped={false} />
-        <pointLight intensity={60} distance={50} decay={2} color={"#ffffff"} />
+        <pointLight intensity={100} distance={50} decay={2} color={"#ffffff"} />
       </mesh>
 
       <group ref={earthOrbitRef}>

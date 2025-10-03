@@ -1,40 +1,41 @@
 "use client";
 
-import React from 'react';
-import { Briefcase, Wrench, Users, Star } from 'lucide-react';
-import Image from 'next/image';
+import React from "react";
+import { Briefcase, Wrench, Users, Star } from "lucide-react";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
-const BRAND_ACCENT_LIGHT = '#fdcc14'; // Gold
-const BRAND_NATURE_GREEN = '#0e6b50'; // Deep Forest Green
+const BRAND_ACCENT_LIGHT = "#fdcc14"; // Gold
+const BRAND_NATURE_GREEN = "#0e6b50"; // Deep Forest Green
 
 const teamMembers = [
   {
-    name: 'Elara Vance',
-    role: 'Founder & CEO',
-    bio: 'With over 20 years in renewable energy, Elara drives our strategic vision, ensuring every decision aligns with our goal of permanent energy independence for clients.',
+    name: "Shivaji Chavan",
+    role: "Founder & CEO",
+    bio: "With over 20 years in renewable energy, Elara drives our strategic vision, ensuring every decision aligns with our goal of permanent energy independence for clients.",
     icon: Briefcase,
-    imageUrl: 'https://placehold.co/400x400/0e6b50/ffffff?text=E.V.',
+    imageUrl: "/team/shivaji.webp",
   },
   {
-    name: 'Dr. Rhys Kaelan',
-    role: 'Lead Solar Engineer',
-    bio: 'Rhys holds a PhD in Photovoltaic Systems and leads our design team, specializing in optimizing panel placement for maximum long-term efficiency and output.',
+    name: "Chandrakant Gore",
+    role: "Lead Solar Engineer",
+    bio: "Rhys holds a PhD in Photovoltaic Systems and leads our design team, specializing in optimizing panel placement for maximum long-term efficiency and output.",
     icon: Wrench,
-    imageUrl: 'https://placehold.co/400x400/0e6b50/ffffff?text=R.K.',
+    imageUrl: "/team/chandu.webp",
   },
   {
-    name: 'Jada Chen',
-    role: 'Director of Customer Success',
-    bio: 'Jada ensures our client experience is seamless from quote to activation. She is the voice of our customers, maintaining our 5-star service rating.',
+    name: "Jada Chen",
+    role: "Director of Customer Success",
+    bio: "Jada ensures our client experience is seamless from quote to activation. She is the voice of our customers, maintaining our 5-star service rating.",
     icon: Users,
-    imageUrl: 'https://placehold.co/400x400/0e6b50/ffffff?text=J.C.',
+    imageUrl: "/team/shivaji.webp",
   },
   {
-    name: 'Marcus Bell',
-    role: 'Installation & Quality Manager',
-    bio: 'Marcus manages all on-site operations. His focus on rigorous quality checks ensures our installations meet and exceed the 25-year warranty standards.',
+    name: "Marcus Bell",
+    role: "Installation & Quality Manager",
+    bio: "Marcus manages all on-site operations. His focus on rigorous quality checks ensures our installations meet and exceed the 25-year warranty standards.",
     icon: Star,
-    imageUrl: 'https://placehold.co/400x400/0e6b50/ffffff?text=M.B.',
+    imageUrl: "/team/chandu.webp",
   },
 ];
 
@@ -42,7 +43,6 @@ export default function TeamLeadership() {
   return (
     <section className="py-24 sm:py-32 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2
@@ -57,31 +57,30 @@ export default function TeamLeadership() {
         </div>
 
         {/* Team Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {teamMembers.map((member) => (
-            <div
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {teamMembers.map((member, index) => (
+            <motion.div
               key={member.name}
-              className="rounded-xl p-[2px] bg-gradient-to-r from-[#0e6b50] to-[#fdcc14] hover:scale-[1.03] transition-transform duration-500 shadow-xl"
+              className="rounded-xl p-[2px] bg-gradient-to-r from-[#0e6b50] to-[#fdcc14] shadow-xl"
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2, duration: 0.8, type: "spring", stiffness: 250, damping: 20 }}
             >
-              <div className="bg-white p-6 rounded-xl flex flex-col items-center text-center h-full">
+              <div className="bg-white p-6 rounded-xl flex flex-col items-center text-center h-full relative overflow-hidden">
                 
-                {/* Profile Image */}
+                {/* Profile Image with cinematic blur */}
                 <div
-                  className="mb-6 w-32 h-32 rounded-full overflow-hidden border-4 shadow-md"
+                  className="relative mb-6 w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 shadow-2xl flex items-center justify-center"
                   style={{ borderColor: BRAND_ACCENT_LIGHT }}
                 >
                   <Image
                     src={member.imageUrl}
                     alt={`Profile of ${member.name}`}
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-500"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = `https://placehold.co/400x400/0e6b50/ffffff?text=${member.name
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('.')}`;
-                    }}
+                    fill
+                    className="object-cover rounded-full grayscale hover:grayscale-0 transition duration-500 z-10"
                   />
+                  <div className="absolute inset-0 rounded-full bg-yellow-200/30 blur-3xl z-0"></div>
                 </div>
 
                 {/* Role Icon */}
@@ -114,7 +113,7 @@ export default function TeamLeadership() {
                   {member.bio}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -123,14 +122,16 @@ export default function TeamLeadership() {
           <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-6">
             Ready to work with the best team in local solar?
           </p>
-          <a
+          <motion.a
             href="/contact"
-            className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-semibold rounded-full shadow-xl transition duration-300 ease-in-out transform hover:scale-105 group"
+            className="inline-flex flex-col sm:flex-row items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border border-transparent text-lg font-semibold rounded-full shadow-xl transition-transform duration-300 ease-in-out gap-2 sm:gap-3"
             style={{ backgroundColor: BRAND_ACCENT_LIGHT, color: BRAND_NATURE_GREEN }}
+            whileHover={{ scale: 1.05, rotate: 1 }}
+            transition={{ type: "spring", stiffness: 250, damping: 20 }}
           >
             Schedule a Consultation
-            <ArrowRight className="w-5 h-5 ml-3 transition-transform duration-300 group-hover:translate-x-1" />
-          </a>
+            <ArrowRight className="w-5 h-5 sm:ml-3 transition-transform duration-300 group-hover:translate-x-1" />
+          </motion.a>
         </div>
       </div>
     </section>

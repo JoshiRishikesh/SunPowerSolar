@@ -1,137 +1,130 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
-const STAGE_HELLO = 0;
-const STAGE_WELCOME = 1;
-const STAGE_LOGO = 2;
-const STAGE_FADE_OUT = 3;
-
-const HELLO_DURATION = 800;
-const WELCOME_DURATION = 1500;
-const LOGO_DURATION = 1200;
-const FADE_OUT_DURATION = 800;
-
 export default function Preloader({ onFinish }: { onFinish?: () => void }) {
-  const [currentStage, setCurrentStage] = useState(STAGE_HELLO);
-
-  const handleFinish = useCallback(() => {
-    setCurrentStage(STAGE_FADE_OUT);
-    setTimeout(() => onFinish?.(), FADE_OUT_DURATION);
-  }, [onFinish]);
+  const [step, setStep] = useState(0); // 0: Hello, 1: Welcome, 2: Logo, 3: FadeOut
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timers: NodeJS.Timeout[] = [];
 
-    if (currentStage === STAGE_HELLO)
-      timer = setTimeout(() => setCurrentStage(STAGE_WELCOME), HELLO_DURATION);
-    else if (currentStage === STAGE_WELCOME)
-      timer = setTimeout(() => setCurrentStage(STAGE_LOGO), WELCOME_DURATION);
-    else if (currentStage === STAGE_LOGO)
-      timer = setTimeout(() => handleFinish(), LOGO_DURATION);
+    // Step 0: Hello dots
+    if (step === 0) {
+      timers.push(
+        setTimeout(() => setStep(1), 2000) // give Hello enough time to fade in/out
+      );
+    }
 
-    return () => clearTimeout(timer);
-  }, [currentStage, handleFinish]);
+    // Step 1: Welcome text
+    if (step === 1) {
+      timers.push(
+        setTimeout(() => setStep(2), 2500) // smooth delay before Logo
+      );
+    }
 
-  const fadeOutOpacity = currentStage === STAGE_FADE_OUT ? 0 : 1;
-  const isHelloVisible = currentStage === STAGE_HELLO;
-  const isWelcomeVisible = currentStage >= STAGE_WELCOME && currentStage < STAGE_FADE_OUT;
-  const isLogoVisible = currentStage >= STAGE_LOGO && currentStage < STAGE_FADE_OUT;
+    // Step 2: Logo
+    if (step === 2) {
+      timers.push(
+        setTimeout(() => {
+          setFadeOut(true); // start fade out
+          timers.push(
+            setTimeout(() => onFinish?.(), 1200) // smooth fade out
+          );
+        }, 2500)
+      );
+    }
 
-  // Mobile-friendly shifts and scaling
-  const welcomeShiftClass =
-    currentStage === STAGE_LOGO
-      ? "translate-y-[-30px] sm:translate-y-[-70px] scale-[0.9]"
-      : "translate-y-0 scale-100";
-  const logoShiftClass =
-    currentStage === STAGE_LOGO
-      ? "translate-y-0 opacity-100 animate-bounce-slow"
-      : "translate-y-10 sm:translate-y-20 opacity-0";
+    return () => timers.forEach(clearTimeout);
+  }, [step, onFinish]);
+
+  const shadowStyle = {
+    textShadow: `
+      2px 2px 6px rgba(25,63,136,0.6),
+      4px 4px 12px rgba(253,204,20,0.5),
+      8px 8px 16px rgba(25,63,136,0.4)
+    `,
+  };
 
   return (
-    <div
-      className={`fixed inset-0 flex flex-col items-center justify-center z-50 transition-opacity`}
-      style={{
-        opacity: fadeOutOpacity,
-        transitionDuration: `${FADE_OUT_DURATION}ms`,
-        background: 'linear-gradient(135deg, #FFF7E0 0%, #FFE066 50%, #FFD700 100%)',
-      }}
-    >
-      {/* Animated Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute w-[250%] h-[250%] bg-gradient-radial from-yellow-200 via-yellow-300 to-yellow-400 opacity-20 animate-spin-slow"></div>
-        <div className="absolute inset-0 bg-[url('/dots.svg')] bg-repeat opacity-10 animate-pulse-slow"></div>
-      </div>
-
-      {/* Logo Glow */}
-      <div
-        className={`absolute w-[180px] h-[180px] sm:w-[350px] sm:h-[350px] rounded-full bg-yellow-400/40 blur-3xl transition-all duration-1000 z-10 
-          ${isLogoVisible ? "opacity-100 scale-100 animate-ping-slow" : "opacity-0 scale-75"}`}
-      />
-
-      {/* Hello Text */}
-      <h1
-        className={`absolute text-3xl sm:text-6xl font-bold font-sans transition-opacity duration-300 z-30 text-gray-900`}
-        style={{ textShadow: "0 0 3px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.3)" }}
-      >
-        {isHelloVisible ? "Hello" : ""}
-      </h1>
-
-      {/* Welcome & Logo */}
-      <div className="flex flex-col items-center justify-center z-20 px-4 text-center">
-        <h1
-          className={`text-lg sm:text-4xl font-extrabold font-sans uppercase tracking-wider
-            transition-all duration-700 ease-out
-            ${isWelcomeVisible ? "opacity-100 animate-gradient-text" : "opacity-0"}
-            ${welcomeShiftClass}`}
-          style={{
-            color: "#1a1a1a",
-            textShadow: "1px 1px 2px rgba(0,0,0,0.2), 2px 2px 4px rgba(0,0,0,0.2)",
-          }}
+    <AnimatePresence>
+      {!fadeOut && (
+        <motion.div
+          className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-gradient-to-br from-yellow-100 via-yellow-200 to-yellow-300 px-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
         >
-          Welcome to Sun Power Solar
-        </h1>
+          {/* Hello with cinematic dots */}
+          {step === 0 && (
+            <motion.h1
+              className="text-4xl sm:text-6xl font-extrabold text-center mb-4 text-gray-900"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              style={shadowStyle}
+            >
+              Hello
+              <span className="inline-flex ml-1">
+                {[0, 1, 2].map((i) => (
+                  <motion.span
+                    key={i}
+                    className="inline-block"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 1, 0] }}
+                    transition={{
+                      duration: 0.6,
+                      repeat: Infinity,
+                      repeatDelay: 0.2,
+                      delay: i * 0.4,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    .
+                  </motion.span>
+                ))}
+              </span>
+            </motion.h1>
+          )}
 
-        <div className={`mt-4 transition-all duration-700 ease-out ${isLogoVisible ? "delay-300" : ""} ${logoShiftClass}`}>
-          <Image
-            src="/logo.webp"
-            alt="Sun Power Solar"
-            width={80}
-            height={80}
-            className="sm:w-[150px] sm:h-[150px]"
-          />
-        </div>
-      </div>
+          {/* Welcome Text cinematic reveal */}
+          {step === 1 && (
+            <motion.h1
+              className="text-3xl sm:text-5xl font-extrabold text-center leading-snug"
+              initial={{ opacity: 0, y: 60, scale: 0.8, letterSpacing: "-0.1em" }}
+              animate={{ opacity: 1, y: 0, scale: 1, letterSpacing: "0.05em" }}
+              exit={{ opacity: 0, y: -40, scale: 0.9 }}
+              transition={{ duration: 2, ease: "easeInOut" }}
+              style={shadowStyle}
+            >
+              Welcome to <br /> Sun Power Solar!
+            </motion.h1>
+          )}
 
-      {/* Keyframes */}
-      <style jsx>{`
-        @keyframes spin-slow {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        @keyframes ping-slow {
-          0%,100% { transform: scale(1); opacity: 0.6; }
-          50% { transform: scale(1.1); opacity: 1; }
-        }
-        @keyframes bounce-slow {
-          0%,100% { transform: translateY(0); }
-          50% { transform: translateY(-15px); }
-        }
-        @keyframes pulse-slow {
-          0%,100% { opacity: 0.05; }
-          50% { opacity: 0.15; }
-        }
-        @keyframes gradient-text {
-          0%,100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        .animate-spin-slow { animation: spin-slow 30s linear infinite; }
-        .animate-ping-slow { animation: ping-slow 2s ease-in-out infinite; }
-        .animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
-        .animate-pulse-slow { animation: pulse-slow 4s ease-in-out infinite; }
-        .animate-gradient-text { background-size: 200% auto; animation: gradient-text 3s linear infinite; }
-      `}</style>
-    </div>
+          {/* Logo cinematic pop */}
+          {step === 2 && (
+            <motion.div
+              className="mt-6 flex items-center justify-center"
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+            >
+              <Image
+                src="/logo.webp"
+                alt="Sun Power Solar"
+                width={120}
+                height={120}
+                className="sm:w-[150px] sm:h-[150px]"
+              />
+            </motion.div>
+          )}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

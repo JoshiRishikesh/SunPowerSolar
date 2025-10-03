@@ -77,16 +77,16 @@ export default function HeroSection() {
             </motion.p>
 
           {/* CTA Buttons */}
-            <motion.div
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 }}
             viewport={{ once: false, amount: 0.3 }}
-            className="mt-10 flex justify-center space-x-4"
-            >
+            className="mt-10 flex flex-col sm:flex-row items-center sm:justify-center gap-4 w-full px-4 sm:px-0"
+          >
             <Link
               href="/contact"
-              className="px-8 py-3 text-lg font-semibold rounded-full shadow-xl flex items-center cursor-pointer relative overflow-hidden group"
+              className="w-full sm:w-auto px-8 py-3 text-lg font-semibold rounded-full shadow-xl flex items-center justify-center cursor-pointer relative overflow-hidden group"
               style={{
                 backgroundColor: BRAND_ACCENT_LIGHT,
                 color: BRAND_PRIMARY_DARK,
@@ -99,7 +99,7 @@ export default function HeroSection() {
 
             <Link
               href="/how-it-works"
-              className="px-8 py-3 text-lg font-semibold rounded-full transition duration-300 hover:bg-white/10 flex items-center border-2 text-white cursor-pointer"
+              className="w-full sm:w-auto px-8 py-3 text-lg font-semibold rounded-full transition duration-300 hover:bg-white/10 flex items-center justify-center border-2 text-white cursor-pointer"
               style={{
                 borderColor: "rgba(255, 255, 255, 0.4)",
               }}
