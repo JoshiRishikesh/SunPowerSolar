@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 
-// Timing constants (Unused imports removed: useLoader, useEffect from React)
 const STAGE_HELLO = 0;
 const STAGE_WELCOME = 1;
 const STAGE_LOGO = 2;
@@ -17,7 +16,6 @@ const FADE_OUT_DURATION = 800;
 export default function Preloader({ onFinish }: { onFinish?: () => void }) {
   const [currentStage, setCurrentStage] = useState(STAGE_HELLO);
 
-  // Use useCallback to memoize the function, improving performance and avoiding lint warnings
   const handleFinish = useCallback(() => {
     setCurrentStage(STAGE_FADE_OUT);
     setTimeout(() => onFinish?.(), FADE_OUT_DURATION);
@@ -33,7 +31,6 @@ export default function Preloader({ onFinish }: { onFinish?: () => void }) {
     else if (currentStage === STAGE_LOGO)
       timer = setTimeout(() => handleFinish(), LOGO_DURATION);
 
-    // Dependency array includes currentStage and the memoized handleFinish
     return () => clearTimeout(timer);
   }, [currentStage, handleFinish]);
 
@@ -42,15 +39,15 @@ export default function Preloader({ onFinish }: { onFinish?: () => void }) {
   const isWelcomeVisible = currentStage >= STAGE_WELCOME && currentStage < STAGE_FADE_OUT;
   const isLogoVisible = currentStage >= STAGE_LOGO && currentStage < STAGE_FADE_OUT;
 
-  // Optimized for mobile: use smaller shifts on smaller screens
+  // Mobile-friendly shifts and scaling
   const welcomeShiftClass =
     currentStage === STAGE_LOGO
-      ? "translate-y-[-50px] sm:translate-y-[-70px] scale-[0.9]"
+      ? "translate-y-[-30px] sm:translate-y-[-70px] scale-[0.9]"
       : "translate-y-0 scale-100";
   const logoShiftClass =
     currentStage === STAGE_LOGO
       ? "translate-y-0 opacity-100 animate-bounce-slow"
-      : "translate-y-20 opacity-0";
+      : "translate-y-10 sm:translate-y-20 opacity-0";
 
   return (
     <div
@@ -58,39 +55,38 @@ export default function Preloader({ onFinish }: { onFinish?: () => void }) {
       style={{
         opacity: fadeOutOpacity,
         transitionDuration: `${FADE_OUT_DURATION}ms`,
-        background: 'linear-gradient(135deg, #FFF7E0 0%, #FFE066 50%, #FFD700 100%)', // Gold/Yellow gradient
+        background: 'linear-gradient(135deg, #FFF7E0 0%, #FFE066 50%, #FFD700 100%)',
       }}
     >
       {/* Animated Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Adjusted size to ensure coverage on large screens while maintaining animation */}
         <div className="absolute w-[250%] h-[250%] bg-gradient-radial from-yellow-200 via-yellow-300 to-yellow-400 opacity-20 animate-spin-slow"></div>
         <div className="absolute inset-0 bg-[url('/dots.svg')] bg-repeat opacity-10 animate-pulse-slow"></div>
       </div>
 
-      {/* Logo Glow - Smaller on mobile */}
+      {/* Logo Glow */}
       <div
-        className={`absolute w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] rounded-full bg-yellow-400/40 blur-3xl transition-all duration-1000 z-10 
+        className={`absolute w-[180px] h-[180px] sm:w-[350px] sm:h-[350px] rounded-full bg-yellow-400/40 blur-3xl transition-all duration-1000 z-10 
           ${isLogoVisible ? "opacity-100 scale-100 animate-ping-slow" : "opacity-0 scale-75"}`}
       />
 
-      {/* Hello - Smaller on mobile */}
+      {/* Hello Text */}
       <h1
-        className={`absolute text-4xl sm:text-6xl font-bold font-sans transition-opacity duration-300 z-30 text-gray-900`}
+        className={`absolute text-3xl sm:text-6xl font-bold font-sans transition-opacity duration-300 z-30 text-gray-900`}
         style={{ textShadow: "0 0 3px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.3)" }}
       >
         {isHelloVisible ? "Hello" : ""}
       </h1>
 
       {/* Welcome & Logo */}
-      <div className="flex flex-col items-center justify-center z-20 px-4"> {/* Added horizontal padding for safety */}
+      <div className="flex flex-col items-center justify-center z-20 px-4 text-center">
         <h1
-          className={`text-xl sm:text-4xl font-extrabold font-sans uppercase tracking-wider
-            transition-all duration-700 ease-out text-center 
+          className={`text-lg sm:text-4xl font-extrabold font-sans uppercase tracking-wider
+            transition-all duration-700 ease-out
             ${isWelcomeVisible ? "opacity-100 animate-gradient-text" : "opacity-0"}
             ${welcomeShiftClass}`}
           style={{
-            color: "#1a1a1a", // dark text for light bg
+            color: "#1a1a1a",
             textShadow: "1px 1px 2px rgba(0,0,0,0.2), 2px 2px 4px rgba(0,0,0,0.2)",
           }}
         >
@@ -98,12 +94,17 @@ export default function Preloader({ onFinish }: { onFinish?: () => void }) {
         </h1>
 
         <div className={`mt-4 transition-all duration-700 ease-out ${isLogoVisible ? "delay-300" : ""} ${logoShiftClass}`}>
-          {/* Logo - Smaller on mobile */}
-          <Image src="/logo.webp" alt="Sun Power Solar" width={100} height={100} className="sm:w-[150px] sm:h-[150px]"/>
+          <Image
+            src="/logo.webp"
+            alt="Sun Power Solar"
+            width={80}
+            height={80}
+            className="sm:w-[150px] sm:h-[150px]"
+          />
         </div>
       </div>
 
-      {/* Tailwind Keyframes (unchanged) */}
+      {/* Keyframes */}
       <style jsx>{`
         @keyframes spin-slow {
           0% { transform: rotate(0deg); }
