@@ -6,11 +6,10 @@ import { motion } from 'framer-motion';
 
 const BRAND_PRIMARY_DARK = '#193f88';
 const BRAND_ACCENT_LIGHT = '#fdcc14';
-const BRAND_GRAY_LIGHT = '#f3f4f6';
 
 interface Solution {
     title: string;
-    icon: React.ElementType;
+    icon: React.ElementType<React.SVGProps<SVGSVGElement>>; // TS-safe icon type
     summary: string;
     features: string[];
     color: string;
@@ -65,10 +64,13 @@ const SolutionCard: React.FC<{ solution: Solution }> = ({ solution }) => (
     >
         <div className="flex items-center mb-4">
             <div 
-                className={`p-4 rounded-xl flex items-center justify-center`}
+                className="p-4 rounded-xl flex items-center justify-center"
                 style={{ backgroundColor: BRAND_ACCENT_LIGHT }}
             >
-                <solution.icon className="w-8 h-8" style={{ color: BRAND_PRIMARY_DARK }} />
+                {React.createElement(solution.icon, {
+                    className: "w-8 h-8",
+                    style: { color: BRAND_PRIMARY_DARK }
+                })}
             </div>
             <h3 className="text-2xl font-bold ml-4" style={{ color: BRAND_PRIMARY_DARK }}>
                 {solution.title}

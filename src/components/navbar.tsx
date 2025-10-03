@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react'; // Using Lucide for clean icons
+import Image from 'next/image';
 
 // Define the navigation links
 const navItems = [
@@ -41,7 +42,7 @@ export default function Navbar() {
                             style={{ color: BRAND_PRIMARY_DARK }} // Enforce dark blue text for the whole logo link
                         >
                             {/* Custom Image Logo (REPLACE THIS PATH) */}
-                            <img
+                            <Image
                                 src="/logo.webp" // <-- REPLACE THIS WITH YOUR LOGO'S ACTUAL PATH
                                 alt="Sun Power Solar Company Logo"
                                 width={32} // Adjusted size for Navbar

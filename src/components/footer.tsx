@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 // Brand Colors
 const BRAND_PRIMARY_DARK = "#193f88";
@@ -51,7 +52,7 @@ export default function Footer() {
                 className="flex items-center tracking-wider group"
                 style={{ color: BRAND_PRIMARY_DARK }}
               >
-                <img
+                <Image
                   src="/logo.webp"
                   alt="Sun Power Logo"
                   width={40}

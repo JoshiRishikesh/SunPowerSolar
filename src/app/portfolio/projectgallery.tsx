@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Zap, MapPin, Calendar, CheckCircle, X, DollarSign } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from "next/image";
 
 const BRAND_PRIMARY_DARK = '#193f88'; // Deep Navy Blue
 const BRAND_ACCENT_LIGHT = '#fdcc14'; // Bright Yellow/Gold
@@ -74,40 +75,41 @@ const allProjects: Project[] = [
 
 // ------------------- Components -------------------
 
-const InfoItem: React.FC<{ icon: React.ElementType; label: string; value: string }> = ({ icon: Icon, label, value }) => (
+const InfoItem: React.FC<{ icon: React.ComponentType<React.SVGProps<SVGSVGElement>>; label: string; value: string }> = ({ icon: Icon, label, value }) => (
   <div className="flex flex-col">
-    <span className="text-xs font-medium text-gray-500 uppercase">{label}</span>
+    <span className="text-xs font-semibold text-gray-500 uppercase">{label}</span>
     <div className="flex items-center mt-1">
-      <Icon className="w-4 h-4 mr-1" style={{ color: BRAND_PRIMARY_DARK }} />
-      <span className="text-base font-medium text-gray-900">{value}</span>
+      <Icon className="w-5 h-5 mr-1" style={{ color: BRAND_PRIMARY_DARK }} />
+      <span className="text-sm md:text-base font-medium text-gray-900">{value}</span>
     </div>
   </div>
 );
 
 const ProjectCard: React.FC<{ project: Project; onClick: () => void }> = ({ project, onClick }) => (
   <motion.div
-    className="bg-white rounded-3xl shadow-lg overflow-hidden cursor-pointer group border-2 border-transparent hover:border-yellow-400 transition-all duration-300 hover:shadow-2xl"
+    className="bg-white rounded-3xl shadow-md overflow-hidden cursor-pointer group border-2 border-transparent hover:border-yellow-400 transition-all duration-300 hover:shadow-xl"
     onClick={onClick}
-    whileHover={{ scale: 1.03 }}
+    whileHover={{ scale: 1.05 }}
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
     viewport={{ once: false, amount: 0.3 }}
   >
     <div className="relative h-56 sm:h-64 md:h-72 overflow-hidden rounded-t-3xl">
-      <img
+      <Image
         src={project.imageUrl}
         alt={`Solar installation at ${project.location}`}
-        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        onError={(e) => { e.currentTarget.src = `https://placehold.co/600x400/${BRAND_PRIMARY_DARK.substring(1)}/ffffff?text=Image+Not+Found`; }}
+        fill
+        className="object-cover transition-transform duration-500 group-hover:scale-110"
+        style={{ borderTopLeftRadius: '1.5rem', borderTopRightRadius: '1.5rem' }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-      <span className="absolute bottom-3 left-4 text-white font-bold text-lg sm:text-xl">{project.title}</span>
+      <span className="absolute bottom-3 left-4 text-white font-bold text-lg sm:text-xl drop-shadow-lg">{project.title}</span>
     </div>
     <div className="p-5">
       <div className="flex items-center text-sm text-gray-600 mb-2">
         <MapPin className="w-4 h-4 mr-2" style={{ color: BRAND_ACCENT_LIGHT }} />
-        <span>{project.location}</span>
+        <span className="font-medium">{project.location}</span>
       </div>
       <div className="flex items-center text-sm font-semibold text-gray-800">
         <Zap className="w-4 h-4 mr-2" style={{ color: BRAND_PRIMARY_DARK }} />
@@ -136,11 +138,12 @@ const ProjectModal: React.FC<{ project: Project; onClose: () => void }> = ({ pro
         transition={{ duration: 0.3 }}
       >
         <div className="relative">
-          <img
+          <Image
             src={project.imageUrl}
             alt={`Solar installation at ${project.location}`}
+            width={800}
+            height={400}
             className="w-full h-72 object-cover rounded-t-3xl"
-            onError={(e) => { e.currentTarget.src = `https://placehold.co/800x400/${BRAND_PRIMARY_DARK.substring(1)}/ffffff?text=Image+Not+Found`; }}
           />
           <button
             onClick={onClose}
@@ -161,7 +164,7 @@ const ProjectModal: React.FC<{ project: Project; onClose: () => void }> = ({ pro
             <InfoItem icon={CheckCircle} label="Panels" value={`${project.panels} Units`} />
           </div>
 
-          <p className="text-gray-700 text-lg leading-relaxed mb-6">{project.details}</p>
+          <p className="text-gray-800 text-lg leading-relaxed mb-6">{project.details}</p>
 
           <div className="flex items-center justify-between p-4 rounded-xl font-semibold text-white bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400">
             <div className="flex items-center">
@@ -198,13 +201,13 @@ export default function ProjectGallery() {
   };
 
   return (
-    <section className="py-20 md:py-32 bg-gray-50">
+    <section className="py-20 md:py-32 bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl" style={{ color: BRAND_PRIMARY_DARK }}>
             Our Completed Projects (Detailed Portfolio)
           </h2>
-          <p className="mt-4 text-xl text-gray-600 max-w-4xl mx-auto">
+          <p className="mt-4 text-lg sm:text-xl text-gray-700 max-w-4xl mx-auto">
             Click on any project below to view detailed specifications, scope of work, and estimated annual savings.
           </p>
         </div>
