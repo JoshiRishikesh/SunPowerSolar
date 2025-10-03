@@ -9,7 +9,9 @@ export default function Preloader({ onFinish }: { onFinish?: () => void }) {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    let timers: NodeJS.Timeout[] = [];
+    // FIX: Changed 'let timers' to 'const timers' to satisfy prefer-const rule.
+    // Since only methods like push() are called on the array, the reference itself is not reassigned.
+    const timers: NodeJS.Timeout[] = [];
 
     // Step 0: Hello dots
     if (step === 0) {
@@ -37,10 +39,12 @@ export default function Preloader({ onFinish }: { onFinish?: () => void }) {
       );
     }
 
+    // Cleanup: Clear all timers when the component unmounts or step changes
     return () => timers.forEach(clearTimeout);
   }, [step, onFinish]);
 
   const shadowStyle = {
+    // Using a template literal for textShadow for potential color interpolation if needed
     textShadow: `
       2px 2px 6px rgba(25,63,136,0.6),
       4px 4px 12px rgba(253,204,20,0.5),

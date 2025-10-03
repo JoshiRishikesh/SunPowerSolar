@@ -1,9 +1,9 @@
 "use client";
 
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { TextureLoader, Color } from "three";
-import { useRef, useMemo, Suspense, useState, useEffect } from "react";
+import { useRef, useMemo, Suspense, useState } from "react";
 import type { Mesh, Group } from "three";
 import Link from "next/link";
 import Preloader from "@/components/preloader";
