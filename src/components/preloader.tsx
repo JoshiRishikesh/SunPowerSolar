@@ -3,130 +3,117 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { Sun, Zap } from "lucide-react";
 
 export default function Preloader({ onFinish }: { onFinish?: () => void }) {
-  const [step, setStep] = useState(0); // 0: Hello, 1: Welcome, 2: Logo, 3: FadeOut
   const [fadeOut, setFadeOut] = useState(false);
+  const [floatingItems, setFloatingItems] = useState<any[]>([]); // generate only on client
 
   useEffect(() => {
-    // FIX: Changed 'let timers' to 'const timers' to satisfy prefer-const rule.
-    // Since only methods like push() are called on the array, the reference itself is not reassigned.
-    const timers: NodeJS.Timeout[] = [];
+    // generate particles on client after mount
+    const items = Array.from({ length: 8 }).map((_, i) => ({
+      size: 6 + Math.random() * 6,
+      x: Math.random() * 200 - 100,
+      y: Math.random() * 200 - 100,
+      icon: i % 2 === 0 ? <Sun size={20} /> : <Zap size={20} />,
+      delay: Math.random() * 2,
+    }));
+    setFloatingItems(items);
 
-    // Step 0: Hello dots
-    if (step === 0) {
-      timers.push(
-        setTimeout(() => setStep(1), 2000) // give Hello enough time to fade in/out
-      );
-    }
-
-    // Step 1: Welcome text
-    if (step === 1) {
-      timers.push(
-        setTimeout(() => setStep(2), 2500) // smooth delay before Logo
-      );
-    }
-
-    // Step 2: Logo
-    if (step === 2) {
-      timers.push(
-        setTimeout(() => {
-          setFadeOut(true); // start fade out
-          timers.push(
-            setTimeout(() => onFinish?.(), 1200) // smooth fade out
-          );
-        }, 2500)
-      );
-    }
-
-    // Cleanup: Clear all timers when the component unmounts or step changes
-    return () => timers.forEach(clearTimeout);
-  }, [step, onFinish]);
-
-  const shadowStyle = {
-    // Using a template literal for textShadow for potential color interpolation if needed
-    textShadow: `
-      2px 2px 6px rgba(25,63,136,0.6),
-      4px 4px 12px rgba(253,204,20,0.5),
-      8px 8px 16px rgba(25,63,136,0.4)
-    `,
-  };
+    const timer = setTimeout(() => {
+      setFadeOut(true);
+      setTimeout(() => onFinish?.(), 800);
+    }, 3000); // total duration
+    return () => clearTimeout(timer);
+  }, [onFinish]);
 
   return (
     <AnimatePresence>
-      {!fadeOut && (
+      {!fadeOut && floatingItems.length > 0 && (
         <motion.div
-          className="fixed inset-0 flex flex-col items-center justify-center z-50 bg-gradient-to-br from-yellow-100 via-yellow-200 to-yellow-300 px-4"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden px-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          transition={{ duration: 0.8 }}
+          style={{
+            background: "linear-gradient(135deg, #d9f99d, #bef264, #fcd34d, #fb923c)",
+          }}
         >
-          {/* Hello with cinematic dots */}
-          {step === 0 && (
-            <motion.h1
-              className="text-4xl sm:text-6xl font-extrabold text-center mb-4 text-gray-900"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-              style={shadowStyle}
-            >
-              Hello
-              <span className="inline-flex ml-1">
-                {[0, 1, 2].map((i) => (
-                  <motion.span
-                    key={i}
-                    className="inline-block"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: [0, 1, 0] }}
-                    transition={{
-                      duration: 0.6,
-                      repeat: Infinity,
-                      repeatDelay: 0.2,
-                      delay: i * 0.4,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    .
-                  </motion.span>
-                ))}
-              </span>
-            </motion.h1>
-          )}
+          {/* Top Heading */}
+          <motion.h1
+            className="text-4xl sm:text-6xl font-extrabold text-center text-black"
+            style={{
+              textShadow: "0 0 12px #ffd700, 0 0 24px #ffd700/50",
+            }}
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          >
+            Sun Power Solar
+          </motion.h1>
 
-          {/* Welcome Text cinematic reveal */}
-          {step === 1 && (
-            <motion.h1
-              className="text-3xl sm:text-5xl font-extrabold text-center leading-snug"
-              initial={{ opacity: 0, y: 60, scale: 0.8, letterSpacing: "-0.1em" }}
-              animate={{ opacity: 1, y: 0, scale: 1, letterSpacing: "0.05em" }}
-              exit={{ opacity: 0, y: -40, scale: 0.9 }}
-              transition={{ duration: 2, ease: "easeInOut" }}
-              style={shadowStyle}
-            >
-              Welcome to <br /> Sun Power Solar!
-            </motion.h1>
-          )}
+          {/* Tagline */}
+          <motion.p
+            className="mt-2 text-lg sm:text-2xl text-black/80 text-center"
+            animate={{ opacity: [0.7, 1, 0.7], y: [0, -5, 0] }}
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          >
+            Achieve Permanent Energy Freedom
+          </motion.p>
 
-          {/* Logo cinematic pop */}
-          {step === 2 && (
+          {/* Logo with halo */}
+          <div className="relative mt-6 flex items-center justify-center">
             <motion.div
-              className="mt-6 flex items-center justify-center"
-              initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
+              className="absolute w-[220px] h-[220px] rounded-full border-2 border-yellow-400 opacity-40"
+            />
+            <Image
+              src="/logo.webp"
+              alt="Sun Power Solar Logo"
+              width={140}
+              height={140}
+              className="relative z-10 sm:w-[150px] sm:h-[150px]"
+            />
+            <motion.div
+              className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/60 to-transparent"
+              style={{ transform: "skewX(-20deg)" }}
+              animate={{ x: ["-150%", "150%"] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+            />
+          </div>
+
+          {/* Floating Icons */}
+          {floatingItems.map((item, idx) => (
+            <motion.div
+              key={idx}
+              className="absolute text-yellow-500/80"
+              style={{ width: item.size, height: item.size }}
+              animate={{
+                x: [0, item.x, 0],
+                y: [0, item.y, 0],
+                opacity: [0.6, 1, 0.6],
+              }}
+              transition={{
+                repeat: Infinity,
+                duration: 4 + Math.random() * 2,
+                delay: item.delay,
+                ease: "easeInOut",
+              }}
             >
-              <Image
-                src="/logo.webp"
-                alt="Sun Power Solar"
-                width={120}
-                height={120}
-                className="sm:w-[150px] sm:h-[150px]"
-              />
+              {item.icon}
             </motion.div>
-          )}
+          ))}
+
+          {/* Extra Glow Rings */}
+          <motion.div
+            className="absolute w-[300px] h-[300px] rounded-full border-2 border-yellow-300 opacity-30"
+            animate={{ rotate: [0, 360] }}
+            transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute w-[400px] h-[400px] rounded-full border-2 border-yellow-200 opacity-20"
+            animate={{ rotate: [360, 0] }}
+            transition={{ repeat: Infinity, duration: 35, ease: "linear" }}
+          />
         </motion.div>
       )}
     </AnimatePresence>

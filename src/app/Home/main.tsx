@@ -9,6 +9,8 @@ import DifferentiatorsSection from './differentiators_section';
 import FinalCtaBlock from './cta_block';
 import AboutPageContent from './AboutPageContent';
 import SolarScrollAnimation from './animation';
+import ClientsMarquee from './clientsMarquee';
+import ProductsShowcase from './ProductsShowcase';
 
 export default function MainContent() {
     return (
@@ -19,6 +21,8 @@ export default function MainContent() {
                   ========================================
                 */}
                 <SolarScrollAnimation />
+                <ClientsMarquee />
+                <ProductsShowcase />
                 <HeroSection />
                 <BenefitsStatsSection />
                 <ProcessSection />

@@ -42,12 +42,16 @@ export default function FinalCtaBlock() {
                     {/* Heading */}
                     <motion.h2
                         className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-snug sm:leading-tight max-w-3xl mx-auto"
-                        style={{ background: 'linear-gradient(90deg, #fdcc14, #28a745, #6a5acd)', WebkitBackgroundClip: 'text', color: 'transparent' }}
+                        style={{ 
+                            background: 'linear-gradient(90deg, #fdcc14, #28a745, #6a5acd)', 
+                            WebkitBackgroundClip: 'text', 
+                            color: 'transparent' 
+                        }}
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 1, delay: 0.2 }}
                     >
-                        Ready to Claim Your <span className="underline decoration-wavy decoration-4 decoration-green-400">Energy Independence</span>?
+                        Ready to Claim Your Energy Independence?
                     </motion.h2>
 
                     {/* Subtext */}
@@ -68,7 +72,7 @@ export default function FinalCtaBlock() {
                         transition={{ duration: 0.8, delay: 0.6 }}
                     >
                         <motion.a
-                            href="/get-quote"
+                            href="/contact"
                             className="flex items-center gap-3 sm:gap-4 px-8 sm:px-12 py-3 sm:py-5 text-lg sm:text-2xl font-bold rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.4)] border-2 bg-gradient-to-r from-[#28a745] via-[#fdcc14] to-[#6a5acd] text-white hover:scale-105 hover:shadow-[0_15px_40px_rgba(0,0,0,0.5)] transition-all"
                             whileHover={{ scale: 1.05, boxShadow: '0 15px 50px rgba(0,0,0,0.5)' }}
                             whileTap={{ scale: 0.97 }}
