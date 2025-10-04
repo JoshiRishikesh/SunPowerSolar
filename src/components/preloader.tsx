@@ -1,17 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Sun, Zap } from "lucide-react";
 
-export default function Preloader({ onFinish }: { onFinish?: () => void }) {
+interface FloatingItem {
+  size: number;
+  x: number;
+  y: number;
+  icon: ReactNode;
+  delay: number;
+}
+
+interface PreloaderProps {
+  onFinish?: () => void;
+}
+
+export default function Preloader({ onFinish }: PreloaderProps) {
   const [fadeOut, setFadeOut] = useState(false);
-  const [floatingItems, setFloatingItems] = useState<any[]>([]); // generate only on client
+  const [floatingItems, setFloatingItems] = useState<FloatingItem[]>([]);
 
   useEffect(() => {
     // generate particles on client after mount
-    const items = Array.from({ length: 8 }).map((_, i) => ({
+    const items: FloatingItem[] = Array.from({ length: 8 }).map((_, i) => ({
       size: 6 + Math.random() * 6,
       x: Math.random() * 200 - 100,
       y: Math.random() * 200 - 100,
@@ -24,6 +36,7 @@ export default function Preloader({ onFinish }: { onFinish?: () => void }) {
       setFadeOut(true);
       setTimeout(() => onFinish?.(), 800);
     }, 3000); // total duration
+
     return () => clearTimeout(timer);
   }, [onFinish]);
 
@@ -37,7 +50,8 @@ export default function Preloader({ onFinish }: { onFinish?: () => void }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8 }}
           style={{
-            background: "linear-gradient(135deg, #d9f99d, #bef264, #fcd34d, #fb923c)",
+            background:
+              "linear-gradient(135deg, #d9f99d, #bef264, #fcd34d, #fb923c)",
           }}
         >
           {/* Top Heading */}
@@ -63,9 +77,7 @@ export default function Preloader({ onFinish }: { onFinish?: () => void }) {
 
           {/* Logo with halo */}
           <div className="relative mt-6 flex items-center justify-center">
-            <motion.div
-              className="absolute w-[220px] h-[220px] rounded-full border-2 border-yellow-400 opacity-40"
-            />
+            <motion.div className="absolute w-[220px] h-[220px] rounded-full border-2 border-yellow-400 opacity-40" />
             <Image
               src="/logo.webp"
               alt="Sun Power Solar Logo"
