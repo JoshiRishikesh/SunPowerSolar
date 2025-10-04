@@ -28,16 +28,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en" className="overflow-x-hidden">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
+      >
         {/* Wrap everything with the Client-side Preloader Wrapper */}
         <PreloaderWrapper>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
             {/* Navbar remains sticky and visible on all pages */}
             <Navbar />
 
             {/* Main content */}
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow w-full overflow-x-hidden">
+              {children}
+            </main>
 
             {/* Footer */}
             <Footer />
