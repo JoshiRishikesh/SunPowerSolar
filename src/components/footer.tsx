@@ -20,9 +20,9 @@ const navItems = [
 
 // Contact Info (Replace with real data)
 const contactInfo = {
-  email: "info@sunpower.com",
-  phone: "+91 9876543210",
-  address: "123 Solar Street, Pune, Maharashtra, India",
+  email: "sunpowersolar@gmail.com",
+  phone: "+91 8208108473",
+  address: "Sangavi, Pune, Maharashtra, India",
 };
 
 export default function Footer() {
@@ -168,13 +168,13 @@ export default function Footer() {
           <div className="mt-10 flex flex-col items-center space-y-6">
             {/* Social Icons */}
             <div className="flex space-x-6">
-              <a href="#" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.instagram.com/lupaentertainment/" target="_blank" rel="noopener noreferrer">
                 <Facebook className="w-6 h-6 text-gray-500 hover:text-blue-600 transition-colors" />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.instagram.com/lupaentertainment/" target="_blank" rel="noopener noreferrer">
                 <Instagram className="w-6 h-6 text-gray-500 hover:text-pink-500 transition-colors" />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.linkedin.com/in/lupaentertainment" target="_blank" rel="noopener noreferrer">
                 <Linkedin className="w-6 h-6 text-gray-500 hover:text-blue-800 transition-colors" />
               </a>
             </div>

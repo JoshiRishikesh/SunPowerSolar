@@ -13,8 +13,8 @@ const BUTTON_GRADIENT =
 
 // Contact Numbers
 const contactNumbers = {
-  sales: "9011103034",
-  service: "9807151151",
+  sales: "9326004793",
+  service: "8208108473",
 };
 
 // Pre-written WhatsApp Messages
